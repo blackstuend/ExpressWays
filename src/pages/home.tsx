@@ -111,7 +111,7 @@ export function Card({item}: {item: ResultItem}) {
     }
 }
 
-  async function handleClickVolume(e: React.MouseEvent<HTMLDivElement>, text: string) {
+  async function handleClickVolume(e: React.MouseEvent<SVGSVGElement>, text: string) {
     e.preventDefault();
 
     if(audioData) {
