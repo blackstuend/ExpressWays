@@ -1,86 +1,19 @@
-# React + Vite + TypeScript Template (react-vite-ui)
+# ExpressWays
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Dan5py/react-vite-ui/blob/main/LICENSE)
+ExpressWays 是一個 AI 驅動的情境翻譯工具，能夠將輸入的句子轉換成多種不同情境下的英文表達方式。
 
-A React + Vite template powered by shadcn/ui.
+## ✨ 特色功能
 
-## 🎉 Features
+- 🎯 多情境翻譯：一次獲得 3-5 種不同場景下的英文表達
+- 🔊 文字轉語音：支援將翻譯結果轉換成自然的英語發音
+- 📝 翻譯歷史：保存並快速查看過往的翻譯記錄
+- 💡 快速範例：提供常用中文句子範例，方便快速開始
 
-- **React** - A JavaScript library for building user interfaces.
-- **Vite** - A fast, opinionated frontend build tool.
-- **TypeScript** - A typed superset of JavaScript that compiles to plain JavaScript.
-- **Tailwind CSS** - A utility-first CSS framework.
-- **Tailwind Prettier Plugin** - A Prettier plugin for formatting Tailwind CSS classes.
-- **ESLint** - A pluggable linting utility for JavaScript and TypeScript.
-- **PostCSS** - A tool for transforming CSS with JavaScript.
-- **Autoprefixer** - A PostCSS plugin to parse CSS and add vendor prefixes.
-- **shadcn/ui** - Beautifully designed components that you can copy and paste into your apps.
+## 🛠️ 技術架構
 
-## ⚙️ Prerequisites
-
-Make sure you have the following installed on your development machine:
-
-- Node.js (version 16 or above)
-- pnpm (package manager)
-
-## 🚀 Getting Started
-
-Follow these steps to get started with the react-vite-ui template:
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/dan5py/react-vite-ui.git
-   ```
-
-2. Navigate to the project directory:
-
-   ```bash
-   cd react-vite-ui
-   ```
-
-3. Install the dependencies:
-
-   ```bash
-   pnpm install
-   ```
-
-4. Start the development server:
-
-   ```bash
-   pnpm dev
-   ```
-
-## 📜 Available Scripts
-
-- pnpm dev - Starts the development server.
-- pnpm build - Builds the production-ready code.
-- pnpm lint - Runs ESLint to analyze and lint the code.
-- pnpm preview - Starts the Vite development server in preview mode.
-
-## 📂 Project Structure
-
-The project structure follows a standard React application layout:
-
-```python
-react-vite-ui/
-  ├── node_modules/      # Project dependencies
-  ├── public/            # Public assets
-  ├── src/               # Application source code
-  │   ├── components/    # React components
-  │   │   └── ui/        # shadc/ui components
-  │   ├── styles/        # CSS stylesheets
-  │   ├── lib/           # Utility functions
-  │   ├── App.tsx        # Application entry point
-  │   └── index.tsx      # Main rendering file
-  ├── eslint.config.js     # ESLint configuration
-  ├── index.html         # HTML entry point
-  ├── postcss.config.js  # PostCSS configuration
-  ├── tailwind.config.ts # Tailwind CSS configuration
-  ├── tsconfig.json      # TypeScript configuration
-  └── vite.config.ts     # Vite configuration
-```
-
-## 📄 License
-
-This project is licensed under the MIT License. See the [LICENSE](https://choosealicense.com/licenses/mit/) file for details.
+- **前端框架**：React + Vite + TypeScript
+- **UI 組件**：Tailwind CSS + shadcn/ui
+- **後端服務**：Supabase Edge Functions
+- **AI 模型**：Google Gemini Pro
+- **TTS 服務**：OpenAI TTS API
+- **數據存儲**：Supabase PostgreSQL
