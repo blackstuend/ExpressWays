@@ -16,4 +16,4 @@ ExpressWays 是一個 AI 驅動的情境翻譯工具，能夠將輸入的句子�
 - **後端服務**：Supabase Edge Functions
 - **AI 模型**：Google Gemini Pro
 - **TTS 服務**：OpenAI TTS API
-- **數據存儲**：Supabase PostgreSQL
+- **數據存儲**：Supabase PostgreSQL 
