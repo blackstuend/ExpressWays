@@ -2,6 +2,9 @@
 
 ExpressWays 是一個 AI 驅動的情境翻譯工具，能夠將輸入的句子轉換成多種不同情境下的英文表達方式。
 
+你可以在 [ExpressWays](https://blackstuend.github.io/ExpressWays/) 上體驗這個工具。
+![ExpressWays](./docs/image.png)
+
 ## ✨ 特色功能
 
 - 🎯 多情境翻譯：一次獲得 3-5 種不同場景下的英文表達
@@ -17,3 +20,4 @@ ExpressWays 是一個 AI 驅動的情境翻譯工具，能夠將輸入的句子�
 - **AI 模型**：Google Gemini Pro
 - **TTS 服務**：OpenAI TTS API
 - **數據存儲**：Supabase PostgreSQL 
+
