@@ -194,7 +194,15 @@ export default function HomePage() {
                     </span>
                   </label>
                 </div>
-                <Textarea id="input-text" placeholder="Enter Chinese Text" className="resize-none" onKeyDown={(e)=> handleKeyDown(e)} onChange={(e)=> setInputText(e.target.value)}  value={inputText} />
+                <Textarea 
+                  id="input-text" 
+                  placeholder="Enter Chinese Text" 
+                  className="resize-none" 
+                  onKeyDown={(e)=> handleKeyDown(e)} 
+                  onChange={(e)=> setInputText(e.target.value)}  
+                  value={inputText}
+                  onClear={() => setInputText('')}
+                />
                 <ul className="mt-4 flex flex-wrap gap-2">
                   {localHistoryList.map((item)=>{
                     return (

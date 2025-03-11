@@ -16,7 +16,7 @@ export default defineConfig({
         name: 'ExpressWays',
         short_name: 'ExpressWays',
         description: 'Your ExpressWays Application',
-        theme_color: '#ffffff',
+        theme_color: '#1e1e1e',
         icons: [
           {
             src: '/ExpressWays/favicon.svg',
