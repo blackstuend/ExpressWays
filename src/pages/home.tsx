@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 
 import TextFieldsIcon from '@mui/icons-material/TextFields';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
 import { createClient } from '@supabase/supabase-js'
@@ -154,25 +155,25 @@ export default function HomePage() {
   }
 
     return (
-      <div className="min-h-screen md:p-8">
+      <div className="h-screen flex flex-col">
         <Toaster position="top-center" />
-        <div className="md:container mx-auto max-w-full md:max-w-3xl">
-          <div className="bg-white dark:bg-gray-900  md:rounded-2xl card-shadow overflow-hidden animate__animated animate__fadeIn">
-            <div className="bg-gradient-to-r from-[#3949ab] to-[#1e88e5] p-6 flex justify-between items-center">
+        <div className="md:container mx-auto max-w-full md:max-w-3xl flex flex-col max-h-full h-fit md:py-4">
+          <div className="bg-white dark:bg-gray-900 md:rounded-2xl card-shadow overflow-hidden animate__animated animate__fadeIn flex flex-col h-full">
+            <div className="bg-gradient-to-r from-[#3949ab] to-[#1e88e5] p-6 flex justify-between items-center sticky top-0 z-10">
               <h1 className="text-2xl font-bold text-white flex items-center">
                 <GTranslateIcon className="w-6 h-6 mr-2" />
                 ExpressWays
               </h1>
               <div className="flex items-center gap-2">
-                <div className="badge text-xs  font-bold uppercase py-1 px-3 bg-white text-blue-700 rounded-full hidden md:block">
-                   <AnimatedGradientText
+                <div className="badge text-xs font-bold uppercase py-1 px-3 bg-white text-blue-700 rounded-full hidden md:block">
+                  <AnimatedGradientText
                     speed={2}
                     colorFrom="#3949ab"
                     colorTo="#1e88e5"
                     className="text-xs font-semibold tracking-tight"
                   >
                     AI Powered
-                   </AnimatedGradientText>
+                  </AnimatedGradientText>
                 </div>
                 <HistoryDrawer 
                   open={historyOpen}
@@ -184,76 +185,88 @@ export default function HomePage() {
                 />
               </div>
             </div>
-            <div className="p-6 border-b border-gray-100">
-              <div className="flex flex-col">
-                <div className='flex justify-between items-center mb-3'>
-                  <label htmlFor="input-text" className="text-sm font-medium text-gray-700 flex items-center">
-                    <TextFieldsIcon className="w-6 h-6 text-blue-600 mr-2" />
-                    <span className="text-gray-700 dark:text-gray-300">
-                            Enter Chinese Text:
-                    </span>
-                  </label>
-                </div>
-                <Textarea 
-                  id="input-text" 
-                  placeholder="Enter Chinese Text" 
-                  className="resize-none" 
-                  onKeyDown={(e)=> handleKeyDown(e)} 
-                  onChange={(e)=> setInputText(e.target.value)}  
-                  value={inputText}
-                  onClear={() => setInputText('')}
-                />
-                <ul className="mt-4 flex flex-wrap gap-2">
-                  {localHistoryList.map((item)=>{
-                    return (
-                      <li key={item.question} onClick={() => handleClickBadge(item)}>
-                        <Badge variant="outline" className='cursor-pointer sample-phrase bg-gray-100 text-xs py-1 px-2 text-gray-700 hover:bg-blue-100 hover:text-blue-700 transition-colors'>
-                          <span className="text-xs font-medium">
-                            {item.question}
-                          </span>
-                        </Badge>
-                      </li>
-                    )
-                  })}
-                </ul>
-                <Button onClick={fetchTranslations} className='mt-4 bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center btn-hover pulse-btn'>
-                  <TranslateIcon className='!w-[18px] !h-[18px]'></TranslateIcon>
-                  Translate Now
-                </Button>
-              </div>
-            </div>
-            {
-              isLoading && (
-                <div className='p-6'>
-                  <div className="flex justify-center items-center">
-                    <Spinner size="large" show={true} />
-                    <span className="ml-3 text-gray-600">Translating...</span>
+            <div className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-700 [&::-webkit-scrollbar-thumb]:rounded-full dark:[&::-webkit-scrollbar-thumb]:bg-gray-600">
+              <div className="p-6 border-b border-gray-100">
+                <div className="flex flex-col">
+                  <div className='flex justify-between items-center mb-3'>
+                    <label htmlFor="input-text" className="text-sm font-medium text-gray-700 flex items-center">
+                      <TextFieldsIcon className="w-6 h-6 text-blue-600 mr-2" />
+                      <span className="text-gray-700 dark:text-gray-300">
+                              Enter Chinese Text:
+                      </span>
+                    </label>
                   </div>
-                </div>
-              )
-            }
-            {
-              !isLoading && result && result.length > 0 && 
-              (
-                <div className='p-6'>
-                  <h2 className="font-semibold text-lg mb-3 text-white flex items-center">
-                      <AutoAwesomeIcon className='!w-24px !h-24px mr-2 text-blue-600'></AutoAwesomeIcon>
-                      Translation Results
-                  </h2>
-                  {
-                    result.map((item)=>{
+                  <Textarea 
+                    id="input-text" 
+                    placeholder="Enter Chinese Text" 
+                    className="resize-none" 
+                    onKeyDown={(e)=> handleKeyDown(e)} 
+                    onChange={(e)=> setInputText(e.target.value)}  
+                    value={inputText}
+                    onClear={() => setInputText('')}
+                  />
+                  <ul className="mt-4 flex flex-wrap gap-2">
+                    {localHistoryList.map((item)=>{
                       return (
-                        <Card item={item} key={item.text}></Card>
+                        <li key={item.question} onClick={() => handleClickBadge(item)}>
+                          <Badge variant="outline" className='cursor-pointer sample-phrase bg-gray-100 text-xs py-1 px-2 text-gray-700 hover:bg-blue-100 hover:text-blue-700 transition-colors'>
+                            <span className="text-xs font-medium">
+                              {item.question}
+                            </span>
+                          </Badge>
+                        </li>
                       )
-                    })
-                  }
+                    })}
+                  </ul>
+                  <Button onClick={fetchTranslations} className='mt-4 bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center btn-hover pulse-btn'>
+                    <TranslateIcon className='!w-[18px] !h-[18px]'></TranslateIcon>
+                    Translate Now
+                  </Button>
                 </div>
-              )
-            }
+              </div>
+              {
+                isLoading && (
+                  <div className='p-6'>
+                    <div className="flex justify-center items-center">
+                      <Spinner size="large" show={true} />
+                      <span className="ml-3 text-gray-600">Translating...</span>
+                    </div>
+                  </div>
+                )
+              }
+              {
+                !isLoading && result && result.length > 0 && 
+                (
+                  <div className='p-6'>
+                    <h2 className="font-semibold text-lg mb-3 text-white flex items-center">
+                        <AutoAwesomeIcon className='!w-24px !h-24px mr-2 text-blue-600'></AutoAwesomeIcon>
+                        Translation Results
+                    </h2>
+                    {
+                      result.map((item)=>{
+                        return (
+                          <Card item={item} key={item.text}></Card>
+                        )
+                      })
+                    }
+                  </div>
+                )
+              }
+            </div>
             <div className='p-6 text-center text-gray-500 text-sm'>
                 Made with
                 <span className='text-red-600'> ♥ </span> for better translations
-            </div>
+                <div className="mt-2 flex justify-center items-center">
+                  <a 
+                    href="https://github.com/blackstuend/ExpressWays" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className=" transition-colors flex items-center gap-1"
+                  >
+                    <GitHubIcon className="w-4 h-4" />
+                  </a>
+                </div>
+              </div>
           </div>
         </div>
       </div>
