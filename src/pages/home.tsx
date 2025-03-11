@@ -31,31 +31,10 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-
-type BadgeItem = {
-  text: string
-}
-
-
 type ResultItem = {
   tag: string
   text: string
 }
-
-const defaultBadges: BadgeItem[] = [
-  {
-    text: '你好，今天過得怎麼樣？',
-  },
-  {
-    text: '今天天氣真好，適合出去走走。',
-  },
-  {
-    text: '你最喜歡什麼顏色？',
-  },
-  {
-    text: '你最喜歡的食物是什麼？',
-  },
-]
 
 type AudioStatus = {
   status: 'playing' | 'normal' | 'loading'
@@ -193,6 +172,10 @@ type HistoryItem = {
   question: string
 }
 
+type LocalHistoryItem = {
+  question: string;
+}
+
 export default function HomePage() {
   const [inputText, setInputText] = useState('');
   const [result, setResult] = useState<ResultItem[] | null>([]);
@@ -200,9 +183,29 @@ export default function HomePage() {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [historyLoading, setHistoryLoading] = useState(false);
+  const [localHistoryList, setLocalHistoryList] = useState<LocalHistoryItem[]>([]);
 
-  function handleClickBadge(item: typeof defaultBadges[0]) {
-    setInputText(item.text)
+  useEffect(()=>{
+    if(localHistoryList.length > 5) {
+      setLocalHistoryList(localHistoryList.slice(0, 5));
+    } 
+
+    if(localHistoryList.length > 0) {
+      localStorage.setItem('localHistory', JSON.stringify(localHistoryList));
+    }
+  }, [localHistoryList]);
+
+  useEffect(()=>{
+    const localHistory = localStorage.getItem('localHistory');
+    if(localHistory) {
+      setLocalHistoryList(JSON.parse(localHistory));
+    }
+  }, []);
+
+  function handleClickBadge(item: LocalHistoryItem) {
+    setInputText(item.question)
+
+    setShouldFetch(true);
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
@@ -220,8 +223,12 @@ export default function HomePage() {
     if(inputText.trim() === '') {
       toast('Please make sure to enter some text to translate');
       return;
-    }
+    } 
 
+    // check if the inputText is already in the localHistoryList
+    if(!localHistoryList.some(item => item.question === inputText)) {
+      setLocalHistoryList([{ question: inputText }, ...localHistoryList]);
+    }
 
     setIsLoading(true);
     try {
@@ -365,12 +372,12 @@ export default function HomePage() {
                 </div>
                 <Textarea id="input-text" placeholder="Enter Chinese Text" className="resize-none" onKeyDown={(e)=> handleKeyDown(e)} onChange={(e)=> setInputText(e.target.value)}  value={inputText} />
                 <ul className="mt-4 flex flex-wrap gap-2">
-                  {defaultBadges.map((item)=>{
+                  {localHistoryList.map((item)=>{
                     return (
-                      <li key={item.text} onClick={() => handleClickBadge(item)}>
+                      <li key={item.question} onClick={() => handleClickBadge(item)}>
                         <Badge variant="outline" className='cursor-pointer sample-phrase bg-gray-100 text-xs py-1 px-2 text-gray-700 hover:bg-blue-100 hover:text-blue-700 transition-colors'>
                           <span className="text-xs font-medium">
-                            {item.text}
+                            {item.question}
                           </span>
                         </Badge>
                       </li>
