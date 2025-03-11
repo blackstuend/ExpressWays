@@ -1,32 +1,20 @@
 // import { Languages } from 'lucide-react'
 import GTranslateIcon from '@mui/icons-material/GTranslate';
-import HistoryIcon from '@mui/icons-material/History';
 import TranslateIcon from '@mui/icons-material/Translate';
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button"
 
 import TextFieldsIcon from '@mui/icons-material/TextFields';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
-import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
-import {
-  Drawer,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer"
 import { createClient } from '@supabase/supabase-js'
-import { Skeleton } from "@/components/ui/skeleton"
-import { useEffect } from 'react';
 import { Spinner } from '@/components/ui/spinner';
 import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
+import { Card } from '@/components/Card';
+import { HistoryDrawer } from '@/components/HistoryDrawer';
 
 
 
@@ -39,135 +27,6 @@ type ResultItem = {
   text: string
 }
 
-type AudioStatus = {
-  status: 'playing' | 'normal' | 'loading'
-}
-
-export function Card({item}: {item: ResultItem}) {
-  const [audioStatus, setAudioStatus] = useState<AudioStatus>({
-    status: 'normal'
-  });
-
-  const [audioData, setAudioData] = useState<ArrayBuffer | null>(null);
-
-  async function playAudioBuffer(arrayBuffer: ArrayBuffer) {
-    // Create audio context
-    const audioContext = new (window.AudioContext)();
-    
-    try {
-        // Clone the array buffer to prevent detached buffer issues
-        const arrayBufferCopy = arrayBuffer.slice(0);
-        
-        // Decode the array buffer into an audio buffer
-        const audioBuffer = await audioContext.decodeAudioData(arrayBufferCopy);
-        
-        // Create buffer source
-        const source = audioContext.createBufferSource();
-        source.buffer = audioBuffer;
-        
-        // Connect to audio destination (speakers)
-        source.connect(audioContext.destination);
-        
-        // Play the audio
-        source.start(0);
-
-        setAudioStatus({
-          status: 'playing'
-        });
-
-        // listen to the end of the audio
-        source.onended = () => {
-          setAudioStatus({
-            status: 'normal'
-          });
-
-          audioContext.close();
-        }
-        
-        return source; // Return source if you need to stop it later
-    } catch (error) {
-        console.error('Error playing audio:', error);
-        setAudioStatus({
-          status: 'normal'
-        });
-    }
-}
-
-  async function handleClickVolume(e: React.MouseEvent<SVGSVGElement>, text: string) {
-    e.preventDefault();
-
-    if(audioData) {
-      playAudioBuffer(audioData);
-      return;
-    }
-
-    setAudioStatus({
-      status: 'loading'
-    });
-    // data will be back openai voice api response
-    const response = await fetch(`${supabaseUrl}/functions/v1/tts`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ text })
-    });
-
-    if(!response.ok) {
-      toast.error('Failed to fetch audio data');
-      setAudioStatus({
-        status: 'normal'
-      });
-      return;
-    }
-
-    const data = await response.arrayBuffer();
-    setAudioData(data.slice(0)); // Store a copy of the buffer
-
-    playAudioBuffer(data);
-  }
-
-
-  return (
-    <div className="bg-gray-800 rounded-lg p-4 mb-4 shadow-md border border-gray-700">
-      <div className="flex items-center mb-2">
-        <Badge className="text-xs font-medium">
-          {item.tag}
-        </Badge>
-        <div className="flex items-center justify-between ml-auto">
-          <div className="flex items-center gap-2">
-            <ContentCopyIcon className="w-4 h-4 text-gray-400 cursor-pointer hover:text-gray-300 transition-colors" onClick={() => {
-              navigator.clipboard.writeText(item.text);
-              toast.success('Text copied to clipboard');
-            }} />
-            {
-              audioStatus.status === 'normal' && (
-                <VolumeMuteIcon onClick={(e)=>{
-                  handleClickVolume(e, item.text);
-                }} className="w-4 h-4 text-gray-400 cursor-pointer hover:text-gray-300 transition-colors" />
-              )
-            }
-            {
-              audioStatus.status === 'loading' && (
-                <div className="h-6 w-6">
-                  <Spinner size="small" show={true} />
-                </div>
-              )
-            }
-            {
-              audioStatus.status === 'playing' && (
-                <VolumeUpIcon className="w-4 h-4 text-gray-400 cursor-pointer hover:text-gray-300 transition-colors" />
-              )
-            }
-          </div>
-        </div>
-      </div>
-      <div className="text-gray-200 text-sm">
-        {item.text}
-      </div>
-    </div>
-  )
-}
 
 type HistoryItem = {
   created_at: string
@@ -315,56 +174,14 @@ export default function HomePage() {
                     AI Powered
                    </AnimatedGradientText>
                 </div>
-                <Drawer open={historyOpen} onOpenChange={setHistoryOpen}>
-                  <DrawerTrigger asChild>
-                    <HistoryIcon onClick={fetchHistory} className="w-6 h-6 text-white cursor-pointer hover:scale-110 transition-transform active:scale-95 hover:opacity-80" />
-                  </DrawerTrigger>
-                  <DrawerContent>
-                    <DrawerHeader>
-                      <DrawerTitle>Translation History</DrawerTitle>
-                    </DrawerHeader>
-                    <div className="px-4">
-                      <div className="max-h-80 overflow-y-auto py-4">
-                        {historyLoading ? (
-                          <div className="space-y-3">
-                            <Skeleton className="w-full h-10" />
-                            <Skeleton className="w-full h-10" />
-                            <Skeleton className="w-full h-10" />
-                            <Skeleton className="w-full h-10" />
-                          </div>
-                            
-                        ) : history.length === 0 ? (
-                          <div className="text-center py-4 text-gray-500">
-                            No translation history available.
-                          </div>
-                        ) : (
-                          <div className="space-y-3">
-                            {history.map((item) => (
-                              <div onClick={() => handleClickHistory(item)} key={item.id} className="bg-gray-100 cursor-pointer hover:bg-gray-200 dark:bg-gray-800 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow duration-200">
-                                <div className="flex justify-between items-center">
-                                  <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
-                                    {item.question}
-                                  </span>
-                                  <span className="text-xs text-gray-400">
-                                    {new Date(item.created_at).toLocaleString('en-US', {
-                                      month: '2-digit',
-                                      day: '2-digit',
-                                      hour: '2-digit',
-                                      minute: '2-digit',
-                                      hour12: false
-                                    })}
-                                  </span>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    <DrawerFooter>
-                    </DrawerFooter>
-                  </DrawerContent>
-                </Drawer>
+                <HistoryDrawer 
+                  open={historyOpen}
+                  onOpenChange={setHistoryOpen}
+                  historyLoading={historyLoading}
+                  history={history}
+                  onHistoryItemClick={handleClickHistory}
+                  onDrawerTriggerClick={fetchHistory}
+                />
               </div>
             </div>
             <div className="p-6 border-b border-gray-100">
