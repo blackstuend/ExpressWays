@@ -157,7 +157,7 @@ export default function HomePage() {
     return (
       <div className="h-screen flex flex-col">
         <Toaster position="top-center" />
-        <div className="md:container mx-auto max-w-full md:max-w-3xl flex flex-col max-h-full h-fit md:py-4">
+        <div className="md:container md:mx-auto max-w-full md:max-w-3xl flex flex-col max-h-full h-fit md:py-4">
           <div className="bg-white dark:bg-gray-900 md:rounded-2xl card-shadow overflow-hidden animate__animated animate__fadeIn flex flex-col h-full">
             <div className="bg-gradient-to-r from-[#3949ab] to-[#1e88e5] p-6 flex justify-between items-center sticky top-0 z-10">
               <h1 className="text-2xl font-bold text-white flex items-center">

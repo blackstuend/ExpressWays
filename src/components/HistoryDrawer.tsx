@@ -40,12 +40,12 @@ export function HistoryDrawer({
           className="w-6 h-6 text-white cursor-pointer hover:scale-110 transition-transform active:scale-95 hover:opacity-80" 
         />
       </DrawerTrigger>
-      <DrawerContent>
-        <DrawerHeader>
+      <DrawerContent className="rounded-t-[10px] border-0 outline-none focus:outline-none">
+        <DrawerHeader className="px-4 pb-2">
           <DrawerTitle>Translation History</DrawerTitle>
         </DrawerHeader>
         <div className="px-4">
-          <div className="max-h-80 overflow-y-auto py-4">
+          <div className="max-h-[60vh] overflow-y-auto py-2">
             {historyLoading ? (
               <div className="space-y-3">
                 <Skeleton className="w-full h-10" />
@@ -85,7 +85,7 @@ export function HistoryDrawer({
             )}
           </div>
         </div>
-        <DrawerFooter />
+        <DrawerFooter className="pt-2 px-4" />
       </DrawerContent>
     </Drawer>
   );
