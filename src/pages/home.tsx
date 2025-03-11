@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
 import { useState } from 'react';
 import { Button } from "@/components/ui/button"
+
 import TextFieldsIcon from '@mui/icons-material/TextFields';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -15,7 +16,6 @@ import { toast } from "sonner"
 import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerFooter,
   DrawerHeader,
@@ -26,6 +26,9 @@ import { createClient } from '@supabase/supabase-js'
 import { Skeleton } from "@/components/ui/skeleton"
 import { useEffect } from 'react';
 import { Spinner } from '@/components/ui/spinner';
+import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
+
+
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
@@ -303,7 +306,14 @@ export default function HomePage() {
               </h1>
               <div className="flex items-center gap-2">
                 <div className="badge text-xs  font-bold uppercase py-1 px-3 bg-white text-blue-700 rounded-full hidden md:block">
-                  AI-Powered
+                   <AnimatedGradientText
+                    speed={2}
+                    colorFrom="#3949ab"
+                    colorTo="#1e88e5"
+                    className="text-xs font-semibold tracking-tight"
+                  >
+                    AI Powered
+                   </AnimatedGradientText>
                 </div>
                 <Drawer open={historyOpen} onOpenChange={setHistoryOpen}>
                   <DrawerTrigger asChild>
@@ -352,9 +362,6 @@ export default function HomePage() {
                       </div>
                     </div>
                     <DrawerFooter>
-                      <DrawerClose asChild>
-                        <Button variant="outline">Close</Button>
-                      </DrawerClose>
                     </DrawerFooter>
                   </DrawerContent>
                 </Drawer>
